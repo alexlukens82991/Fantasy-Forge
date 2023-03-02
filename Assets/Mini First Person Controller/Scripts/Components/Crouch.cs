@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class Crouch : MonoBehaviour
+public class Crouch : NetworkBehaviour
 {
     public KeyCode key = KeyCode.LeftControl;
 
@@ -28,6 +29,9 @@ public class Crouch : MonoBehaviour
 
     void Reset()
     {
+        if (!IsOwner)
+            return;
+
         // Try to get components.
         movement = GetComponentInParent<FirstPersonMovement>();
         headToLower = movement.GetComponentInChildren<Camera>().transform;
@@ -36,6 +40,9 @@ public class Crouch : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!IsOwner)
+            return;
+
         if (Input.GetKey(key))
         {
             // Enforce a low head.

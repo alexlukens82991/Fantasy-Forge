@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
-public class Jump : MonoBehaviour
+public class Jump : NetworkBehaviour
 {
     Rigidbody rigidbody;
     public float jumpStrength = 2;
@@ -18,12 +19,18 @@ public class Jump : MonoBehaviour
 
     void Awake()
     {
+        if (!IsOwner)
+            return;
+
         // Get rigidbody.
         rigidbody = GetComponent<Rigidbody>();
     }
 
     void LateUpdate()
     {
+        if (!IsOwner)
+            return;
+
         // Jump when the Jump button is pressed and we are on the ground.
         if (Input.GetButtonDown("Jump") && (!groundCheck || groundCheck.isGrounded))
         {

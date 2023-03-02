@@ -8,6 +8,7 @@ public class HexGridGenerator : EditorWindow
 {
     private Vector2 gridSize;
     private float spacing;
+    private float tileSize;
     private GameObject hexPrefab;
 
     [MenuItem("Lukens/Generators/Hex Grid Generator")]
@@ -21,6 +22,7 @@ public class HexGridGenerator : EditorWindow
         hexPrefab = (GameObject)EditorGUILayout.ObjectField(hexPrefab, typeof(GameObject), false);
         gridSize = EditorGUILayout.Vector2Field("Size", gridSize);
         spacing = EditorGUILayout.FloatField("Spacing", spacing);
+        tileSize = EditorGUILayout.FloatField("Tile Size", tileSize);
 
         if (GUILayout.Button("Generate Grid"))
         {
@@ -36,7 +38,7 @@ public class HexGridGenerator : EditorWindow
         //float hexHeight = tileSize.y * Mathf.Sqrt(3)
         // r = s / (2 x cos(PI/6))
 
-        float size = 0.04f;
+        float size = tileSize;
 
         Debug.Log("Tile Size: " + size);
 
