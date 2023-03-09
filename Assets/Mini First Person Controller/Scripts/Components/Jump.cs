@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Jump : NetworkBehaviour
 {
-    Rigidbody rigidbody;
+    [SerializeField] Rigidbody rigidbody;
     public float jumpStrength = 2;
     public event System.Action Jumped;
 

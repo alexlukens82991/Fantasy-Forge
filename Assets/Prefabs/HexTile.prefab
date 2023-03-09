@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4553804348946753226}
   - component: {fileID: 4553804348946753225}
   - component: {fileID: 4553804348946753230}
+  - component: {fileID: 4580558700201551949}
   m_Layer: 0
   m_Name: HexTile
   m_TagString: Tile
@@ -33,7 +34,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6479343019885595042}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -133,19 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8deae8091111f4eb30a56c1f4e0d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList:
-  - Layer: 0
-    OriginatingState: -181560815
-    DestinationState: 991533264
-    TransitionDuration: 0.25
-    TriggerNameHash: 1286797620
-    TransitionIndex: 0
-  - Layer: 0
-    OriginatingState: 991533264
-    DestinationState: -181560815
-    TransitionDuration: 0.25
-    TriggerNameHash: 1923443894
-    TransitionIndex: 0
+  TransitionStateInfoList: []
   m_Animator: {fileID: 4553804348946753226}
 --- !u!114 &4553804348946753230
 MonoBehaviour:
@@ -163,3 +153,50 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &4580558700201551949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8279347172221193244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24f4399fd8f91741a47dbd523f83135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentModel: {fileID: 0}
+  m_CenterPoint: {fileID: 6479343019885595042}
+  hotKey: 0
+  TestObject: {fileID: 0}
+--- !u!1 &8656903038521851324
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6479343019885595042}
+  m_Layer: 0
+  m_Name: CenterPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6479343019885595042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8656903038521851324}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8767935421680277158}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

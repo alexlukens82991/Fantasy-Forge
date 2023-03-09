@@ -44,8 +44,6 @@ public class PlayerInteract : NetworkBehaviour
                 {
                     NetworkObject netObj;
                     NetworkObjectReference objRef;
-                    //if (currentActiveTileAnimator)
-                    //    currentActiveTileAnimator.SetBool("Active", false);
 
                     if (currentActiveTileAnimator)
                     {

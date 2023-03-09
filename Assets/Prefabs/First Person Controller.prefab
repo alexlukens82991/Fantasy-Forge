@@ -1428,6 +1428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f977f53412d81140ab13b3fca57cca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody: {fileID: 6381685209371091854}
   jumpStrength: 2
   groundCheck: {fileID: 6469022689496349608}
 --- !u!114 &6469395888157301478
