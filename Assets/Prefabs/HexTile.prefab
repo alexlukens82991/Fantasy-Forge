@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4553804348946753225}
   - component: {fileID: 4553804348946753230}
   - component: {fileID: 4580558700201551949}
+  - component: {fileID: 5293502129706208984}
   m_Layer: 0
   m_Name: HexTile
   m_TagString: Tile
@@ -111,7 +112,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8279347172221193244}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 76dddaa6a454e5943851e4e1a80fc680, type: 2}
   m_CullingMode: 0
@@ -169,6 +170,19 @@ MonoBehaviour:
   m_CenterPoint: {fileID: 6479343019885595042}
   hotKey: 0
   TestObject: {fileID: 0}
+--- !u!114 &5293502129706208984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8279347172221193244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308cfe5c8496bc048a34b97f95cd1958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Renderer: {fileID: 7631026394080652745}
 --- !u!1 &8656903038521851324
 GameObject:
   m_ObjectHideFlags: 0

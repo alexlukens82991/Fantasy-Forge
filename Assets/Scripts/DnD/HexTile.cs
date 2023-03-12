@@ -48,14 +48,4 @@ public class HexTile : NetworkBehaviour
             Debug.LogError("COULD NOT FIND NET OBJECT");
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        return;
-
-        if (showLanding)
-        {
-            Gizmos.DrawSphere(m_CenterPoint.position, 0.1f);
-        }
-    }
 }
