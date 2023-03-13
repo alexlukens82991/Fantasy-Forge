@@ -4,57 +4,131 @@ using UnityEngine;
 
 public class HexTileAnimator : MonoBehaviour
 {
+    [Header("Cache")]
+    public HexTile HexTile;
     [SerializeField] private MeshRenderer m_Renderer;
 
-    [Header("Status")]
-    public TileState TileState;
+    
 
     [Header("Settings")]
     [SerializeField] private Color m_StartColor;
-    [SerializeField] private float m_FadeActiveTime = 1;
-    private Coroutine m_CurrentFadeRoutine;
+    [SerializeField] private float m_StateTransitionTime = 4;
+    private Coroutine m_CurrentScaleRoutine;
+    private Coroutine m_CurrentColorRoutine;
 
     private void Start()
     {
-        TileState = new(this);
-
         SetColor(m_StartColor);
+    }
+
+    public void SetTileState(TileState tileState)
+    {
+        SetTileActive(tileState.Active);
+
+        if (tileState.Active)
+        {
+            LerpColor(tileState.Color);
+            LerpScale(tileState.Scale);
+        }
+
     }
 
     public void SetTileActive(bool active)
     {
-        if (TileState.Active != active)
+        if (HexTile.TileState.Active != active)
         {
-            TileState.Active = active;
+            HexTile.TileState.Active = active;
 
-            if (m_CurrentFadeRoutine != null)
-            {
-                StopCoroutine(m_CurrentFadeRoutine);
-            }
+            m_Renderer.enabled = active;
 
-            m_CurrentFadeRoutine = StartCoroutine(SetActiveRoutine(active));
+            //if (m_CurrentFadeRoutine != null)
+            //{
+            //    StopCoroutine(m_CurrentFadeRoutine);
+            //}
+
+            //m_CurrentFadeRoutine = StartCoroutine(SetActiveRoutine(active));
         }
     }
 
     public void SetColor(Color color)
     {
-        if (!TileState.Active)
+        if (!HexTile.TileState.Active)
             return;
         
         m_Renderer.material.color = color;
-        TileState.Color = color;
-        TileState.Color = color;
+        HexTile.TileState.Color = color;
+        HexTile.TileState.Color = color;
+    }
+
+    public void LerpColor(Color color)
+    {
+        if (m_CurrentColorRoutine != null)
+        {
+            StopCoroutine(m_CurrentColorRoutine);
+        }
+
+        m_CurrentColorRoutine = StartCoroutine(LerpColorRoutine(color));
     }
 
     public void SetZScale(float scale)
     {
-        if (!TileState.Active)
+        if (!HexTile.TileState.Active)
             return;
 
         Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, scale);
 
         transform.localScale = newScale;
-        TileState.Scale = transform.localScale;
+        HexTile.TileState.Scale = transform.localScale;
+    }
+
+    public void LerpScale(Vector3 scale)
+    {
+        if (m_CurrentScaleRoutine != null)
+        {
+            StopCoroutine(m_CurrentScaleRoutine);
+        }
+
+        m_CurrentScaleRoutine = StartCoroutine(LerpScaleRoutine(scale));
+    }
+
+    public IEnumerator LerpScaleRoutine(Vector3 scale)
+    {
+        float timeElapsed = 0;
+        Vector3 start = transform.localScale;
+        Vector3 target = scale;
+        float normalizedTime;
+
+        do
+        {
+            timeElapsed += Time.deltaTime;
+
+            normalizedTime = Mathf.Clamp01(timeElapsed / m_StateTransitionTime);
+            Vector3 newScale = Vector3.Lerp(start, target, normalizedTime);
+
+            transform.localScale = newScale;
+
+            yield return null;
+        } while (normalizedTime < m_StateTransitionTime);
+    }
+
+    private IEnumerator LerpColorRoutine(Color color)
+    {
+        float timeElapsed = 0;
+        Color start = m_Renderer.material.color;
+        Color target = color;
+        float normalizedTime;
+
+        do
+        {
+            timeElapsed += Time.deltaTime;
+
+            normalizedTime = Mathf.Clamp01(timeElapsed / m_StateTransitionTime);
+            Color newColor = Color.Lerp(start, target, normalizedTime);
+
+            m_Renderer.material.color = newColor;
+
+            yield return null;
+        } while (normalizedTime < m_StateTransitionTime);
     }
 
     private IEnumerator SetActiveRoutine(bool active)
@@ -68,7 +142,7 @@ public class HexTileAnimator : MonoBehaviour
         {
             timeElapsed += Time.deltaTime;
 
-            normalizedTime = Mathf.Clamp01(timeElapsed / m_FadeActiveTime);
+            normalizedTime = Mathf.Clamp01(timeElapsed / m_StateTransitionTime);
             float lerpedAlpha = Mathf.Lerp(startingAlpha, targetAlpha, normalizedTime);
 
             Color color = m_Renderer.material.color;
@@ -76,21 +150,8 @@ public class HexTileAnimator : MonoBehaviour
             m_Renderer.material.color = color;
 
             yield return null;
-        } while (normalizedTime < 1.0f);
+        } while (normalizedTime < m_StateTransitionTime);
 
     }
 }
 
-public class TileState
-{
-    public Color Color;
-    public Vector3 Scale;
-    public bool Active;
-
-    public TileState(HexTileAnimator hexTileAnimator)
-    {
-        Color = Color.grey;
-        Scale = hexTileAnimator.gameObject.transform.localScale;
-        Active = true;
-    }
-}

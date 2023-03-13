@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -7,16 +8,14 @@ public class HexTile : NetworkBehaviour
 {
     public NetworkObject CurrentModel;
     [SerializeField] private Transform m_CenterPoint;
-    public KeyCode hotKey;
 
-    public NetworkObject TestObject;
-    private bool showLanding = false;
+    [Header("Status")]
+    public TileState TileState;
 
-    //private void Update()
-    //{
+    [Header("Cache")]
+    public int TileID;
+    public HexTileAnimator HexTileAnimator;
 
-    //    if (Input.GetKeyDown(hotKey))
-    //    {
     //        if (IsHost)
     //        {
     //            MoveModelToThisTileClientRpc(new NetworkObjectReference(TestObject));
@@ -26,10 +25,16 @@ public class HexTile : NetworkBehaviour
     //            RequestToMoveModelServerRpc(new NetworkObjectReference(TestObject));
     //        }
 
-    //        showLanding = true;
-    //    }
-    //}
 
+    private void Awake()
+    {
+        TileState = new(this);
+    }
+
+    public void SetTileState(TileState tileState)
+    {
+        HexTileAnimator.SetTileState(tileState);
+    }
 
     [ServerRpc(RequireOwnership = false)]
     public void RequestToMoveModelServerRpc(NetworkObjectReference modelObject)
@@ -48,5 +53,24 @@ public class HexTile : NetworkBehaviour
         {
             Debug.LogError("COULD NOT FIND NET OBJECT");
         }
+    }
+}
+
+[Serializable]
+public class TileState
+{
+    // TODO: Need custom saving for the object.
+    // object will need to be abstract class that can be saved
+    public int TileID;
+    public Color Color;
+    public Vector3 Scale;
+    public bool Active;
+
+    public TileState(HexTile hexTile)
+    {
+        TileID = hexTile.TileID;
+        Color = Color.grey;
+        Scale = hexTile.transform.localScale;
+        Active = true;
     }
 }

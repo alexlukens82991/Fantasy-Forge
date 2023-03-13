@@ -132,8 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentModel: {fileID: 0}
   m_CenterPoint: {fileID: 6479343019885595042}
-  hotKey: 0
-  TestObject: {fileID: 0}
+  HexTileAnimator: {fileID: 5293502129706208984}
 --- !u!114 &5293502129706208984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,8 +145,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308cfe5c8496bc048a34b97f95cd1958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HexTile: {fileID: 4580558700201551949}
   m_Renderer: {fileID: 7631026394080652745}
   m_StartColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+  m_FadeActiveTime: 1
 --- !u!1 &8656903038521851324
 GameObject:
   m_ObjectHideFlags: 0

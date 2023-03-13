@@ -16,7 +16,9 @@ public class TerrainEditor : MonoBehaviour
     [SerializeField] private List<Color> m_PreviousColors;
 
     [Header("Cache")]
+    [SerializeField] private HexTerrainController m_HexTerrainController;
     [SerializeField] private Transform m_Cursor;
+    private float m_TargetZScale;
 
     private void Update()
     {
@@ -71,6 +73,11 @@ public class TerrainEditor : MonoBehaviour
             m_Height--;
         }
 
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            m_HexTerrainController.SaveCurrentTerrainState();
+        }
+
         UpdateCursor();
         UpdateColorList();
     }
@@ -94,22 +101,19 @@ public class TerrainEditor : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.CompareTag("Tile"))
+            Vector3 position = hit.point;
+            if (Input.GetKey(KeyCode.LeftControl))
             {
-                Vector3 position = hit.point;
-                if (Input.GetKey(KeyCode.LeftControl))
-                {
-                    position = new(hit.point.x, hit.point.y, m_Cursor.transform.position.z);
+                position = new(hit.point.x, hit.point.y, m_Cursor.transform.position.z);
                     
-                }
-                else if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    position = new(m_Cursor.transform.position.x, hit.point.y,hit.point.z);
-                }
-
-                m_Cursor.position = position;
-                m_Cursor.localScale = Vector3.one * m_CursorSize * 0.1f;
             }
+            else if (Input.GetKey(KeyCode.LeftShift))
+            {
+                position = new(m_Cursor.transform.position.x, hit.point.y,hit.point.z);
+            }
+
+            m_Cursor.position = position;
+            m_Cursor.localScale = Vector3.one * m_CursorSize * 0.1f;
         }
     }
 
@@ -151,13 +155,18 @@ public class TerrainEditor : MonoBehaviour
         {
             if (hit.collider.CompareTag("Tile"))
             {
+                if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+                {
+                    m_TargetZScale = hit.collider.transform.localScale.z;
+                }
+
                 Collider[] hitTiles = Physics.OverlapSphere(hit.point, m_CursorSize * 0.05f);
 
                 foreach (Collider col in hitTiles)
                 {
                     if (m_HeightLock)
                     {
-                        if (hit.collider.transform.localScale.z != col.transform.localScale.z)
+                        if (m_TargetZScale != col.transform.localScale.z)
                         {
                             continue;
                         }
@@ -166,7 +175,7 @@ public class TerrainEditor : MonoBehaviour
                     {
                         HexTileAnimator foundAnimator = col.gameObject.GetComponent<HexTileAnimator>();
 
-                        if (!color.Equals(foundAnimator.TileState.Color))
+                        if (!color.Equals(foundAnimator.HexTile.TileState.Color))
                         {
                             foundAnimator.SetColor(color);
                         }
