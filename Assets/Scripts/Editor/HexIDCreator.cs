@@ -27,7 +27,6 @@ public class HexIDCreator : EditorWindow
     {
         foreach (Transform child in hexGrid.transform)
         {
-            child.GetComponent<HexTile>().TileID = child.GetSiblingIndex();
             child.gameObject.name = "Tile_" + child.GetSiblingIndex();
         }
     }

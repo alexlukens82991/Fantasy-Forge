@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class HexTerrainController : MonoBehaviour
@@ -41,5 +42,8 @@ public class HexTerrainController : MonoBehaviour
         }
 
         CurrentTerrainState.TileStates = tileStates;
+
+        // TODO: MUST MOVE TO EDITOR SCRIPT
+        EditorUtility.SetDirty(CurrentTerrainState);
     }
 }

@@ -13,7 +13,6 @@ public class HexTile : NetworkBehaviour
     public TileState TileState;
 
     [Header("Cache")]
-    public int TileID;
     public HexTileAnimator HexTileAnimator;
 
     //        if (IsHost)
@@ -61,14 +60,12 @@ public class TileState
 {
     // TODO: Need custom saving for the object.
     // object will need to be abstract class that can be saved
-    public int TileID;
     public Color Color;
     public Vector3 Scale;
     public bool Active;
 
     public TileState(HexTile hexTile)
     {
-        TileID = hexTile.TileID;
         Color = Color.grey;
         Scale = hexTile.transform.localScale;
         Active = true;
