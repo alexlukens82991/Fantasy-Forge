@@ -12,6 +12,8 @@ public class TerrainEditor : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private TerrainMode m_TerrainMode;
+    [SerializeField] private bool m_HeightLock;
+    [SerializeField] private List<Color> m_PreviousColors;
 
     [Header("Cache")]
     [SerializeField] private Transform m_Cursor;
@@ -37,7 +39,19 @@ public class TerrainEditor : MonoBehaviour
                 AdjustHeight();
             }
         }
-        
+        if (m_TerrainMode == TerrainMode.SetActive)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                SetTilesActive(true);
+            }
+
+            if (Input.GetMouseButton(1))
+            {
+                SetTilesActive(false);
+            }
+        }
+
 
         if (Input.GetKeyDown("="))
         {
@@ -58,6 +72,20 @@ public class TerrainEditor : MonoBehaviour
         }
 
         UpdateCursor();
+        UpdateColorList();
+    }
+
+    private void UpdateColorList()
+    {
+        if (m_PreviousColors.Count == 0)
+        {
+            m_PreviousColors.Add(m_LeftClickColor);
+        }
+
+        if (m_PreviousColors[m_PreviousColors.Count - 1] != m_LeftClickColor)
+        {
+            m_PreviousColors.Add(m_LeftClickColor);
+        }
     }
 
     private void UpdateCursor()
@@ -68,33 +96,49 @@ public class TerrainEditor : MonoBehaviour
         {
             if (hit.collider.CompareTag("Tile"))
             {
-                m_Cursor.position = hit.point;
+                Vector3 position = hit.point;
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    position = new(hit.point.x, hit.point.y, m_Cursor.transform.position.z);
+                    
+                }
+                else if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    position = new(m_Cursor.transform.position.x, hit.point.y,hit.point.z);
+                }
+
+                m_Cursor.position = position;
                 m_Cursor.localScale = Vector3.one * m_CursorSize * 0.1f;
+            }
+        }
+    }
+
+    private void SetTilesActive(bool active)
+    {
+        Collider[] hitTiles = Physics.OverlapSphere(m_Cursor.transform.position, m_CursorSize * 0.05f);
+
+        foreach (Collider col in hitTiles)
+        {
+            if (col.CompareTag("Tile"))
+            {
+                HexTileAnimator foundAnimator = col.gameObject.GetComponent<HexTileAnimator>();
+
+                foundAnimator.SetHighlighted(active);
             }
         }
     }
 
     private void AdjustHeight()
     {
-        Ray ray = m_Cam.ScreenPointToRay(Input.mousePosition);
+        Collider[] hitTiles = Physics.OverlapSphere(m_Cursor.transform.position, m_CursorSize * 0.05f);
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        foreach (Collider col in hitTiles)
         {
-            if (hit.collider.CompareTag("Tile"))
+            if (col.CompareTag("Tile"))
             {
-                Collider[] hitTiles = Physics.OverlapSphere(hit.point, m_CursorSize * 0.05f);
+                HexTileAnimator foundAnimator = col.gameObject.GetComponent<HexTileAnimator>();
 
-                print(hitTiles.Length);
-
-                foreach (Collider col in hitTiles)
-                {
-                    if (col.CompareTag("Tile"))
-                    {
-                        HexTileAnimator foundAnimator = col.gameObject.GetComponent<HexTileAnimator>();
-
-                        foundAnimator.SetZScale(m_Height * 0.2f);
-                    }
-                }
+                foundAnimator.SetZScale(m_Height * 0.2f);
             }
         }
     }
@@ -109,10 +153,15 @@ public class TerrainEditor : MonoBehaviour
             {
                 Collider[] hitTiles = Physics.OverlapSphere(hit.point, m_CursorSize * 0.05f);
 
-                print(hitTiles.Length);
-
                 foreach (Collider col in hitTiles)
                 {
+                    if (m_HeightLock)
+                    {
+                        if (hit.collider.transform.localScale.z != col.transform.localScale.z)
+                        {
+                            continue;
+                        }
+                    }
                     if (col.CompareTag("Tile"))
                     {
                         HexTileAnimator foundAnimator = col.gameObject.GetComponent<HexTileAnimator>();
@@ -131,6 +180,7 @@ public class TerrainEditor : MonoBehaviour
     {
         None,
         Paint,
-        Height
+        Height,
+        SetActive
     }
 }

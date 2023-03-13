@@ -11,23 +11,24 @@ public class HexTile : NetworkBehaviour
 
     public NetworkObject TestObject;
     private bool showLanding = false;
-    private void Update()
-    {
 
-        if (Input.GetKeyDown(hotKey))
-        {
-            if (IsHost)
-            {
-                MoveModelToThisTileClientRpc(new NetworkObjectReference(TestObject));
-            }
-            else
-            {
-                RequestToMoveModelServerRpc(new NetworkObjectReference(TestObject));
-            }
+    //private void Update()
+    //{
 
-            showLanding = true;
-        }
-    }
+    //    if (Input.GetKeyDown(hotKey))
+    //    {
+    //        if (IsHost)
+    //        {
+    //            MoveModelToThisTileClientRpc(new NetworkObjectReference(TestObject));
+    //        }
+    //        else
+    //        {
+    //            RequestToMoveModelServerRpc(new NetworkObjectReference(TestObject));
+    //        }
+
+    //        showLanding = true;
+    //    }
+    //}
 
 
     [ServerRpc(RequireOwnership = false)]
