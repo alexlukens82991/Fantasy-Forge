@@ -123,7 +123,7 @@ public class TerrainEditor : MonoBehaviour
             {
                 HexTileAnimator foundAnimator = col.gameObject.GetComponent<HexTileAnimator>();
 
-                foundAnimator.SetHighlighted(active);
+                foundAnimator.SetTileActive(active);
             }
         }
     }
@@ -166,7 +166,7 @@ public class TerrainEditor : MonoBehaviour
                     {
                         HexTileAnimator foundAnimator = col.gameObject.GetComponent<HexTileAnimator>();
 
-                        if (!color.Equals(foundAnimator.CurrentBaseColor))
+                        if (!color.Equals(foundAnimator.TileState.Color))
                         {
                             foundAnimator.SetColor(color);
                         }

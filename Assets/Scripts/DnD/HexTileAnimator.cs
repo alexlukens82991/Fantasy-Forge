@@ -5,11 +5,8 @@ using UnityEngine;
 public class HexTileAnimator : MonoBehaviour
 {
     [SerializeField] private MeshRenderer m_Renderer;
-    public Color CurrentBaseColor { get { return m_CurrentBaseColor; } private set { m_CurrentBaseColor = value; } }
-    private Color m_CurrentBaseColor;
 
     [Header("Status")]
-    public bool Highlighted;
     public TileState TileState;
 
     [Header("Settings")]
@@ -22,29 +19,31 @@ public class HexTileAnimator : MonoBehaviour
         SetColor(m_StartColor);
     }
 
-    public void SetHighlighted(bool highlight)
+    public void SetTileActive(bool active)
     {
-        Highlighted = highlight;
+        TileState.Active = active;
 
-        Color color = Highlighted ? Color.magenta : CurrentBaseColor;
+        Color color = active ? TileState.Color : Color.magenta;
 
         m_Renderer.material.color = color;
-    }
 
-    public void SetState(bool state)
-    {
-        TileState.Active = state;
     }
 
     public void SetColor(Color color)
     {
+        if (!TileState.Active)
+            return;
+        
         m_Renderer.material.color = color;
-        CurrentBaseColor = color;
+        TileState.Color = color;
         TileState.Color = color;
     }
 
     public void SetZScale(float scale)
     {
+        if (!TileState.Active)
+            return;
+
         Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, scale);
 
         transform.localScale = newScale;
@@ -60,7 +59,7 @@ public class TileState
 
     public TileState(HexTileAnimator hexTileAnimator)
     {
-        Color = hexTileAnimator.CurrentBaseColor;
+        Color = Color.grey;
         Scale = hexTileAnimator.gameObject.transform.localScale;
         Active = true;
     }
