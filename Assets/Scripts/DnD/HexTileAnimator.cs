@@ -13,4 +13,11 @@ public class HexTileAnimator : MonoBehaviour
         m_Renderer.material.color = color;
         CurrentBaseColor = color;
     }
+
+    public void SetZScale(float scale)
+    {
+        Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, scale);
+
+        transform.localScale = newScale;
+    }
 }

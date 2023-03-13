@@ -38449,13 +38449,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894841015}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.938154, y: -6.624859, z: 8.507698}
+  m_LocalRotation: {x: 0.26411414, y: 0.6517732, z: -0.26018128, w: -0.66162014}
+  m_LocalPosition: {x: 0.538836, y: 1.6529832, z: 17.422874}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_Father: {fileID: 1835338925}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &894841017
 SphereCollider:
@@ -82318,8 +82318,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Cam: {fileID: 1835338923}
   m_CursorSize: 5
+  m_Height: 1
   m_LeftClickColor: {r: 0, g: 1, b: 0, a: 1}
   m_RightClickColor: {r: 1, g: 1, b: 1, a: 1}
+  m_TerrainMode: 0
   m_Cursor: {fileID: 894841016}
 --- !u!4 &1835338925
 Transform:
@@ -82332,7 +82334,8 @@ Transform:
   m_LocalPosition: {x: 4.16, y: 4.174735, z: 8.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 894841016}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
