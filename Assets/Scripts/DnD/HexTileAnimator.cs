@@ -21,16 +21,23 @@ public class HexTileAnimator : MonoBehaviour
         SetColor(m_StartColor);
     }
 
-    public void SetTileState(TileState tileState)
+    public void SetTileState(TileState tileState, bool useAnimation = true)
     {
         SetTileActive(tileState.Active);
 
         if (tileState.Active)
         {
-            LerpColor(tileState.Color);
-            LerpScale(tileState.Scale);
+            if (useAnimation)
+            {
+                LerpColor(tileState.Color);
+                LerpScale(tileState.Scale);
+            }
+            else
+            {
+                SetColor(tileState.Color);
+                SetScale(tileState.Scale);
+            }
         }
-
     }
 
     public void SetTileActive(bool active)
@@ -55,8 +62,7 @@ public class HexTileAnimator : MonoBehaviour
         if (!HexTile.TileState.Active)
             return;
         
-        m_Renderer.material.color = color;
-        HexTile.TileState.Color = color;
+        m_Renderer.sharedMaterial.color = color;
         HexTile.TileState.Color = color;
     }
 
@@ -79,6 +85,14 @@ public class HexTileAnimator : MonoBehaviour
 
         transform.localScale = newScale;
         HexTile.TileState.Scale = transform.localScale;
+    }
+
+    public void SetScale(Vector3 scale)
+    {
+        if (!HexTile.TileState.Active)
+            return;
+
+        transform.localScale = scale;
     }
 
     public void LerpScale(Vector3 scale)
@@ -108,7 +122,10 @@ public class HexTileAnimator : MonoBehaviour
             transform.localScale = newScale;
 
             yield return null;
-        } while (normalizedTime < m_StateTransitionTime);
+        } while (normalizedTime < 1f);
+
+        HexTile.TileState.Scale = scale;
+
     }
 
     private IEnumerator LerpColorRoutine(Color color)
@@ -126,9 +143,10 @@ public class HexTileAnimator : MonoBehaviour
             Color newColor = Color.Lerp(start, target, normalizedTime);
 
             m_Renderer.material.color = newColor;
-
             yield return null;
-        } while (normalizedTime < m_StateTransitionTime);
+        } while (normalizedTime < 1f);
+
+        HexTile.TileState.Color = color;
     }
 
     private IEnumerator SetActiveRoutine(bool active)
@@ -150,7 +168,10 @@ public class HexTileAnimator : MonoBehaviour
             m_Renderer.material.color = color;
 
             yield return null;
-        } while (normalizedTime < m_StateTransitionTime);
+        } while (normalizedTime < 1f);
+
+        HexTile.TileState.Active = active;
+
 
     }
 }

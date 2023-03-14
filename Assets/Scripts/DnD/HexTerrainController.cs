@@ -22,6 +22,16 @@ public class HexTerrainController : MonoBehaviour
         }
     }
 
+    [ExecuteAlways]
+    public void EditorSetState(TerrainState terrainState)
+    {
+        foreach (HexTile hexTile in HexTiles)
+        {
+            string[] expanded = hexTile.gameObject.name.Split('_');
+            hexTile.SetTileState(terrainState.TileStates[int.Parse(expanded[1])], false);
+        }
+    }
+
     public void LoadTerrainState(TerrainState terrainState)
     {
         foreach (HexTile hexTile in HexTiles)

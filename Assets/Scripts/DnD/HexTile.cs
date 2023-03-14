@@ -30,10 +30,11 @@ public class HexTile : NetworkBehaviour
         TileState = new(this);
     }
 
-    public void SetTileState(TileState tileState)
+    public void SetTileState(TileState tileState, bool useAnimation = true)
     {
-        HexTileAnimator.SetTileState(tileState);
+        HexTileAnimator.SetTileState(tileState, useAnimation);
     }
+
 
     [ServerRpc(RequireOwnership = false)]
     public void RequestToMoveModelServerRpc(NetworkObjectReference modelObject)
