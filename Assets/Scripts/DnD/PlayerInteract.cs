@@ -12,11 +12,6 @@ public class PlayerInteract : NetworkBehaviour
         if (!IsOwner)
             enabled = false;
 
-        foreach (KeyValuePair<ulong, NetworkObject> item in NetworkManager.Singleton.SpawnManager.SpawnedObjects)
-        {
-            print(item.Value.name);
-        }
-
     }
 
     private void Update()
