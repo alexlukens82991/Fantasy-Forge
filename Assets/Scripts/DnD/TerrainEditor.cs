@@ -75,7 +75,7 @@ public class TerrainEditor : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
-            m_HexTerrainController.SaveCurrentTerrainState();
+            //m_HexTerrainController.SaveCurrentTerrainState();
         }
 
         UpdateCursor();

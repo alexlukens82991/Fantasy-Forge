@@ -1,10 +1,11 @@
+using LukensUtils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class HexTerrainController : MonoBehaviour
+public class HexTerrainController : Singleton<HexTerrainController>
 {
     public TerrainState CurrentTerrainState;
     public TerrainState[] m_TestableStates;
@@ -22,31 +23,6 @@ public class HexTerrainController : MonoBehaviour
 
             if (currState == m_TestableStates.Length)
                 currState = 0;
-        }
-    }
-
-    [ExecuteAlways]
-    public void EditorSetState(TerrainState terrainState)
-    {
-        foreach (HexTile hexTile in HexTiles)
-        {
-            string[] expanded = hexTile.gameObject.name.Split('_');
-            hexTile.SetTileState(terrainState.TileStates[int.Parse(expanded[1])], false);
-        }
-
-        foreach (Transform child in m_BuildingsParent)
-        {
-            Destroy(child.gameObject);
-        }
-
-
-        foreach (BuildingState buildingState in terrainState.BuildingStates)
-        {
-            GameObject newBuilding = Instantiate(m_GenericBuildingPrefab, m_BuildingsParent);
-
-            newBuilding.transform.position = buildingState.Position;
-            newBuilding.transform.rotation = buildingState.Rotation;
-            newBuilding.transform.localScale = buildingState.Scale;
         }
     }
 
@@ -103,31 +79,7 @@ public class HexTerrainController : MonoBehaviour
         StartCoroutine(ActivateBuildingsRoutine(terrainState));
     }
 
-    public void SaveCurrentTerrainState()
-    {
-        print("SAVING TERRAIN STATE");
-        List<TileState> tileStates = new();
-
-        foreach (HexTile tile in HexTiles)
-        {
-            tileStates.Add(tile.TileState);
-        }
-
-        CurrentTerrainState.TileStates = tileStates;
-
-        List<BuildingState> buildingStates = new();
-
-        foreach (Transform child in m_BuildingsParent)
-        {
-            BuildingState newState = new(child);
-            buildingStates.Add(newState);
-        }
-
-        CurrentTerrainState.BuildingStates = buildingStates;
-
-        // TODO: MUST MOVE TO EDITOR SCRIPT
-        EditorUtility.SetDirty(CurrentTerrainState);
-    }
+    
 }
 
 [Serializable]
