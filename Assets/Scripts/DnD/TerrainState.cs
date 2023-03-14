@@ -6,4 +6,5 @@ using UnityEngine;
 public class TerrainState : ScriptableObject
 {
     public List<TileState> TileStates;
+    public List<BuildingState> BuildingStates;
 }

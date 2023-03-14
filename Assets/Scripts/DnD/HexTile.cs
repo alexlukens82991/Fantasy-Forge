@@ -32,6 +32,7 @@ public class HexTile : NetworkBehaviour
 
     public void SetTileState(TileState tileState, bool useAnimation = true)
     {
+        TileState = tileState;
         HexTileAnimator.SetTileState(tileState, useAnimation);
     }
 
