@@ -11,7 +11,6 @@ public class NetworkTerrainController : NetworkBehaviour
     {
         if (!IsHost)
         {
-            print("is not host");
             return;
         }
 
